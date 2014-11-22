@@ -2,12 +2,12 @@
 
     var i = 0;
 
-    $.ajaxPrefilter('ijson json',function(options, origOptions, jqXHR) {
+    $.ajaxPrefilter('njson json',function(options, origOptions, jqXHR) {
         
-        options.ijson = true;
+        options.njson = true;
     });
 
-    $.ajaxTransport('ijson', function (options, originalOptions) {
+    $.ajaxTransport('njson', function (options, originalOptions) {
         if (options.async) {
 
             var form,
@@ -30,7 +30,7 @@
                     // prevents warning popups on HTTPS in IE6:
                     /*jshint scripturl: true */
                     iframe = $(
-                        '<iframe src="javascript:false;" id="ijson-' + i + '" name="ijson-' + i + '"></iframe>'
+                        '<iframe src="javascript:false;" id="njson-' + i + '" name="njson-' + i + '"></iframe>'
                     ).bind('load', function () {
                         iframe
                             .unbind('load')
@@ -55,7 +55,7 @@
                                 completeCallback(
                                     200,
                                     'success',
-                                    {'ijson': response}//use a converter
+                                    {'njson': response}//use a converter
                                 );
                                 // Fix for IE endless progress bar activity bug
                                 // (happens on form submits to iframe targets):
@@ -118,7 +118,7 @@
     // See also
     // https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#content-type-negotiation
 
-    function pjson(iframe) {
+    function njson(iframe) {
         //console.log('json',iframe[0]);
         return iframe && $.parseJSON($(iframe[0].body).text());
     }
@@ -126,10 +126,10 @@
     /*be prepared to handle various response types*/
     $.ajaxSetup({
         converters: {
-            'ijson text': pjson,
-            'ijson json': pjson,
-            'ijson html': pjson,
-            'ijson script': pjson
+            'njson text': njson,
+            'njson json': njson,
+            'njson html': njson,
+            'njson script': njson
         }
     });
 
