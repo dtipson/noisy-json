@@ -1,7 +1,7 @@
-ijson
+Noisy JSON
 =====
 
-Purpose: Control whether a particular Same-Domain ajax json requests to trigger a browsers native loading indicator by piping some $.ajax requests through as special iframe method
+Purpose: Control whether a particular Same-Domain ajax JSON requests to trigger a browsers native loading indicator by piping some $.ajax requests through as special iframe method
 
 ####The Problem
 Ajax requests don't trigger browser loading indicators in most situations, which is usually a good thing, but can be disappointing for that point in single page apps when you WANT the user to think a major form submission or "page" transition is in process.
