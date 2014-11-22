@@ -23,7 +23,14 @@ The code/approach in question is basically a fork/rewrite of [cmlenz](https://gi
 Once you include the library, you can control whether or not an ajax request triggers the browser loading state simply by setting the dataType from "json" to "njson json" in the $.ajax options object. 
 
 ```
-$.ajax({url:'/your/local/api',data:{some:true,data:true},dataType:'njson json'});
+$.ajax({
+    url:'/your/local/api',
+    data:{
+        some:true,
+        data:true
+    },
+    dataType:'njson json'
+});
 ```
 
 Here's an example function that can do either on a test call to a simulated "slow" api:
