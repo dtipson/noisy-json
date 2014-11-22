@@ -46,11 +46,11 @@ function testcall(silent){
 $(document).ready(function(){
 
     //noisy ajax call
-    ifcall();
+    testcall();
 
     //vs
     //silent (standard) ajax call
-    ifcall(true);
+    testcall(true);
     
 });
 ```
