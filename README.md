@@ -1,25 +1,25 @@
 Noisy JSON
 =====
 
-Purpose: Control whether a particular Same-Domain ajax JSON requests to trigger a browsers native loading indicator by piping some $.ajax requests through as special iframe method
+Control whether particular Same-Domain ajax JSON requests trigger a browser's native loading indicator by piping selected $.ajax requests through as special iframe method.
 
 ####The Problem
 Ajax requests don't trigger browser loading indicators in most situations, which is usually a good thing, but can be disappointing for that point in single page apps when you WANT the user to think a major form submission or "page" transition is in process.
 
 ####The Lousy Solution: 
-When you want to trigger "loading state," insert a separate hidden iframe into the page that loads a forever stalled resource (such as a php page that runs the command sleep(100000); ) and then remove it whenever you're done.  Doing this requires an extra http request, not to mention requiring the use of a server that is forced to expend resources basically doing nothing but keeping pointless connections alive, which doesn't scale.  It's also not intuitively linked to the actual action of getting the data: it's an effect tacked on later.
+The only really reliable way to trigger a browser's native loading state is to insert a separate hidden iframe into the page that loads a "stalled" resource (such as a php page that runs the command sleep(100000); ) and then removes it whenever you're done.  Doing this requires an extra http request, not to mention requiring the use of a server that is forced to expend resources basically doing nothing but keeping pointless connections alive.  The approach is also not intuitively linked to the actual action of getting the data: it's an effect that has to be tacked on later.
 
 ####This Solution
-We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/) api to create a special data transfer method that pipes requests through a hidden iframe, then parses out the result as if it were a normal JSON request.
+We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/) api to create a special data transfer method that pipes requests through a hidden iframe, then parses the result and returns it as if it were a normal JSON request.
 
-####Its Limitations
-- Same-Origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications).
+####Limitations
+- This i same-Origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but not all).
 - the server's api responses need to be sent as application/json, text/plain, or text/html
 
 The code/approach in question is basically a fork of [cmlenz](https://github.com/cmlenz)'s lifesaving [jquery-iframe-transport](https://github.com/cmlenz/jquery-iframe-transport) (an amazingly slick little solution for achieving ajax-like file uploads on older browsers).
 
 
-Once you include the library, you can control whether or not an ajax request triggers the browser loading state simply by setting the dataType from "json" to "ijson json" in the options object.  Here's an example function that can do either on a test call to a simulated "slow" api:
+Once you include the library, you can control whether or not an ajax request triggers the browser loading state simply by setting the dataType from "json" to "ijson json" in the $.ajax options object.  Here's an example function that can do either on a test call to a simulated "slow" api:
 
 
 ```
@@ -27,14 +27,14 @@ function testcall(silent){
     
     var options = $.extend(
             {
-                url:'/response.php',
-                type:'POST',
+                url:'/response.php',//endpoint that takes 4 seconds to respond with data
+                type:'POST',//POST or GET
                 data: {
-                    foo:45,
+                    foo:45,//include any data as usual
                     bar:65
                 }
             },
-            silent?{}:{ dataType:'ijson json'}
+            silent ? { dataType:'json' } : { dataType:'ijson json' }//control which method is used
         ),
         req = $.ajax(options).always(function(d){
             console.log('response',d,arguments);
