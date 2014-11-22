@@ -13,7 +13,7 @@ The only really reliable way to trigger a browser's native loading state is to i
 We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/) api to create a special data transfer method that pipes requests through a hidden iframe, then parses the result and returns it as if it were a normal JSON request.
 
 ####Limitations
-- This i same-Origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but not all).
+- This approach is same-Origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but not all).
 - the server's api responses need to be sent as application/json, text/plain, or text/html
 
 The code/approach in question is basically a fork of [cmlenz](https://github.com/cmlenz)'s lifesaving [jquery-iframe-transport](https://github.com/cmlenz/jquery-iframe-transport) (an amazingly slick little solution for achieving ajax-like file uploads on older browsers).
