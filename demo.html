@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>iJSON Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1>iJSON demo</h1>
+        <p>To test, host the repo in a place that can run the response.php script properly (simulating an API that takes 4 seconds to respond).</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <button type="button" data-silent="false" class="btn btn-lg btn-primary">Make a "Noisy" Request</button>
+        </div>
+        <div class="col-md-4">
+            <button type="button" data-silent="true" class="btn btn-lg btn-info">Make a "Silent" Request</button>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="/ijson.js"></script>
+<script>
+(function($){ 
+    function testcall(silent){
+        var options = $.extend(
+                {
+                    url:'/response.php',
+                    type:'GET',
+                    data: {
+                        foo:45,
+                        bar:65
+                    }
+                },
+                silent?{}:{ dataType:'ijson json' }
+            ),
+            req = $.ajax(options).always(function(d){
+                console.log('response',d,arguments);
+            });
+        console.log('making that call '+(silent?'silently':'loudly')+ ' with options',options);
+    }
+
+    $('body').on('click','[data-silent]',function(){
+        testcall($(this).data('silent'));
+    });
+
+}(jQuery));
+
+</script>
+</body></html>
