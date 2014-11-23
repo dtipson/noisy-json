@@ -26,12 +26,17 @@
             <button type="button" data-silent="true" class="btn btn-lg btn-info">Make a "Silent" Request</button>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6 center" id="response"></div>
+    </div>
 </div>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="/jquery-noisy-json.js"></script>
 <script>
-(function($){ 
+(function($){
+    var $response = $('#response');
     function testcall(silent){
+        $response.html('Making a request that will take 4 seconds to complete...');
         var options = $.extend(
                 {
                     url:'/response.php',
@@ -45,6 +50,7 @@
             ),
             req = $.ajax(options).always(function(d){
                 console.log('response',d,arguments);
+                $response.html('Success: '+ JSON.stringify(d));
             });
         console.log('making that call '+(silent?'silently':'loudly')+ ' with options',options);
     }
