@@ -10,12 +10,12 @@
     $.ajaxTransport('njson', function (options, originalOptions) {
         if (options.async) {
 
-            var form,
-                formHTML='',
+            var $form,
+                $formHTML='',
                 iframe;
             return {
                 send: function (headers, completeCallback) {
-                    form = $('<form/>').hide();
+                    $form = $('<$form/>').hide();
 
                     // XDomainRequest only supports GET and POST:
                     if (options.type.toUpperCase()!=="GET") {
@@ -58,18 +58,19 @@
                                     {'njson': response}//use a converter
                                 );
                                 // Fix for IE endless progress bar activity bug
-                                // (happens on form submits to iframe targets):
-                                $('<iframe src="javascript:false;"></iframe>').appendTo(form);
+                                // (happens on $form submits to iframe targets):
+                                $('<iframe src="javascript:false;"></iframe>').appendTo($form);
                                 window.setTimeout(function () {
-                                    // Removing the form in a setTimeout call
+                                    // Removing the $form in a setTimeout call
                                     // allows Chrome's developer tools to display
                                     // the response result
-                                    form.remove();
+                                    $form.remove();
                                 }, 10);
                             });
 
-                        /*configure form properties*/
-                        form.prop({
+                        /*configure $form properties*/
+                        $form.prop({
+                            'accept-charset':'UTF-8',
                             'target': iframe.prop('name'),
                             'action': originalOptions.url,
                             'method': options.type
@@ -78,17 +79,19 @@
                         /*convert data into inputs for POST or GET*/
                         if (originalOptions.data) {
                             $.each(originalOptions.data, function (key,value) {
-                                formHTML += '<input type="hidden" name="'+key+'" value="'+value+'"/>';
+                                $formHTML += '<input type="hidden" name="'+key+'" value="'+value+'"/>';
                             });
-                            form.append(formHTML);
+                            $form.append($formHTML);
                         }
-                        form.submit();
+                        window.setTimeout(function(){
+                            $form.submit();
+                        },1);//have to wait a tic or else FF doesn't respond!
             
                         // Insert the file input fields at their original location
                         // by replacing the clones with the originals:
                         
                     });
-                    form.append(iframe).appendTo(document.body);
+                    $form.append(iframe).appendTo(document.body);
                 },
                 abort: function () {
                     if (iframe) {
@@ -99,8 +102,8 @@
                             .unbind('load')
                             .prop('src', initialIframeSrc);
                     }
-                    if (form) {
-                        form.remove();
+                    if ($form) {
+                        $form.remove();
                     }
                 }
             };

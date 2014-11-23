@@ -15,7 +15,8 @@
 <div class="container">
     <div class="jumbotron">
         <h1>Noisy JSON demo</h1>
-        <p>To test, host the repo in a place that can run the response.php script properly (simulating an API that takes 4 seconds to respond).</p>
+        <p>"Noisy" requests trigger the browser's native loading UI: the favicon spins in Chrome and a statusbar "waiting for..." appears, mobile devices show simulated progress bars, etc. "Silent" requests are the normal ajax request we're all used to, which doesn't trigger any of those indicators.</p>
+        <p<small>To get this working on your machine, you'd need to host the repo in a place that can run the response.php script properly (simulating an API that takes 4 seconds to respond) from the same domain that's making the json request.</small></p>
     </div>
 
     <div class="row">
