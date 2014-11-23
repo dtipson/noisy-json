@@ -36,7 +36,7 @@
 (function($){
     var $response = $('#response');
     function testcall(silent){
-        $response.html('Making a request that will take 4 seconds to complete...');
+        $response.html('Making a '+(silent?'silent','noisy')+' request that will take 4 seconds to complete...');
         var options = $.extend(
                 {
                     url:'/response.php',
