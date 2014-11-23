@@ -18,7 +18,7 @@
                     form = $('<form/>').hide();
 
                     // XDomainRequest only supports GET and POST:
-                    if (options.type.toUpperCase()) {
+                    if (options.type.toUpperCase()!=="GET") {
                         options.url = options.url + (/\?/.test(options.url) ? '&' : '?') + '_method='+options.type.toUpperCase();
                         options.type = 'POST';
                     }
