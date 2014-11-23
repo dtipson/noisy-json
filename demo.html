@@ -31,7 +31,9 @@
         <div class="col-md-6 center" id="response"></div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<!--[if lte IE 8]><script src="https://code.jquery.com/jquery-1.11.1.min.js"></script></script><![endif]-->
+<!--[if gt IE 8]><!--><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script></script><!--<![endif]-->
+
 <script src="/jquery-noisy-json.js"></script>
 <script>
 (function($){
@@ -47,7 +49,7 @@
                         bar:65
                     }
                 },
-                silent?{}:{ dataType:'njson json' }
+                silent ? {dataType:'json'} : { dataType:'njson json' }
             ),
             req = $.ajax(options).always(function(d){
                 console.log('response',d,arguments);

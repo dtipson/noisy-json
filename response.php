@@ -3,7 +3,7 @@
     ##to actually use it you'd need to set up a local server that supports php on the same domain as the api
     
     sleep(4);
-    header('Content-Type: application/json');
+    header('Content-Type: text/plain; charset=utf-8');
     echo '{ "status": 200, "data" : { "wedidit": true }  }';
 ?>
 

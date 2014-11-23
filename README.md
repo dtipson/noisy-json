@@ -14,6 +14,13 @@ We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/
 
 The code/approach in question is basically a fork/rewrite of [cmlenz](https://github.com/cmlenz)'s lifesaving [jquery-iframe-transport](https://github.com/cmlenz/jquery-iframe-transport) (an amazingly slick little solution for achieving ajax-like file uploads on older browsers).
 
+###Browser Support
+So far I've gotten this working as expected in Chrome and Firefox and the IEs.  ~IE8 is a bit tricky for json in general as it needs server responses to be configured in such a way that it doesn't try to download the json file: namely, you should send responses as content-type text/plain, and always specify you ajax dataType (be it json or njson json).
+
+Not sure what to think about Safari. Safari/iOS used to be broken such that it would show loading indicators too much, but the latest Safari seems to have decided to fix problem that by not triggering loading states for any assets loaded in iframes period.  We'll have to wait and see how they decide to break it in the next release: perhaps a loading indicator that will run until you make Safari your default browser?
+
+So far can't seem to trigger any native indicators on mobile browsers, but highly interested in doing so.
+
 ####Limitations
 - This approach is same-origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but not all).
 - the server's api responses need to be sent as application/json, text/plain, or text/html
@@ -47,7 +54,7 @@ function testcall(silent){
                     bar:65
                 }
             },
-            silent ? { dataType:'json' } : { dataType:'njson json' }//control which method is used
+            silent ? { dataType:'json' } : { dataType:'njson json' } //control which method is used
         ),
         req = $.ajax(options).always(function(d){
             console.log('response',d,arguments);
