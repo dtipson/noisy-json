@@ -15,7 +15,7 @@
                 iframe;
             return {
                 send: function (headers, completeCallback) {
-                    $form = $('<$form/>').hide();
+                    $form = $('<form/>').hide();
 
                     // XDomainRequest only supports GET and POST:
                     if (options.type.toUpperCase()!=="GET") {
@@ -91,6 +91,7 @@
                         // by replacing the clones with the originals:
                         
                     });
+                    console.log($form);
                     $form.append(iframe).appendTo(document.body);
                 },
                 abort: function () {

@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 </head>
 <body>
-
 <div class="container">
     <div class="jumbotron">
         <h1>Noisy JSON demo</h1>
@@ -30,6 +29,9 @@
     <div class="row">
         <div class="col-md-6 center" id="response"></div>
     </div>
+
+
+    
 </div>
 <!--[if lte IE 8]><script src="https://code.jquery.com/jquery-1.11.1.min.js"></script></script><![endif]-->
 <!--[if gt IE 8]><!--><script src="https://code.jquery.com/jquery-2.1.1.min.js"></script></script><!--<![endif]-->
@@ -39,7 +41,7 @@
 (function($){
     var $response = $('#response');
     function testcall(silent){
-        $response.html('Making a '+(silent?'silent','noisy')+' request that will take 4 seconds to complete...');
+        $response.html('Making a '+(silent?'silent':'noisy')+' request that will take 4 seconds to complete...');
         var options = $.extend(
                 {
                     url:'/response.php',

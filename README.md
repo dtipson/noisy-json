@@ -15,11 +15,11 @@ We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/
 The code/approach in question is basically a fork/rewrite of [cmlenz](https://github.com/cmlenz)'s lifesaving [jquery-iframe-transport](https://github.com/cmlenz/jquery-iframe-transport) (an amazingly slick little solution for achieving ajax-like file uploads on older browsers).
 
 ###Browser Support
-So far I've gotten this working as expected in Chrome and Firefox and the IEs.  ~IE8 is a bit tricky for json in general as it needs server responses to be configured in such a way that it doesn't try to download the json file: namely, you should send responses as content-type text/plain, and always specify you ajax dataType (be it json or njson json).
+So far I've gotten this working as expected in Chrome and Firefox and the IEs.  ~IE8 is a bit tricky for json in general as it needs server responses to be configured in such a way that it doesn't try to download the json file: namely, you should send responses as content-type text/plain, and always specify your ajax dataType (be it json or njson json).
 
-Not sure what to think about Safari. Safari/iOS used to be broken such that it would show loading indicators too much, but the latest Safari seems to have decided to fix problem that by not triggering loading states for any assets loaded in iframes period.  We'll have to wait and see how they decide to break it in the next release: perhaps a loading indicator that will run until you make Safari your default browser?
+I'm not sure what to think about Safari. Safari/iOS used to be broken such that it would show its loading indicators too often, but the latest Safari seems to have settled on not showing ANY UI indicators for any assets loaded in iframes period.  Seriously: if you load a site in an iframe and then browse around on it, the browser simply won't react AT ALL to page nativagation.  Bizarre.
 
-So far can't seem to trigger any native indicators on mobile browsers, but highly interested in doing so.
+So far I can't seem to trigger any native indicators on mobile browsers via the iframe technique: mobile browsers are just plain stingy about telling the user when things are loading, probably because it makes things "seem" slower.  But what are the rules that control whether they show their progress indicators or not?  Loading new content into the page later doesn't seem to trigger them, but the original assets do...
 
 ####Limitations
 - This approach is same-origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but not all).
