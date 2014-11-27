@@ -15,9 +15,9 @@ We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/
 The code/approach in question is basically a fork/rewrite of [cmlenz](https://github.com/cmlenz)'s lifesaving [jquery-iframe-transport](https://github.com/cmlenz/jquery-iframe-transport) (an amazingly slick little solution for achieving ajax-like file uploads on older browsers).
 
 ####Browser Support
-So far I've gotten this working as expected in desktop Chrome, Firefox, and IE8.  (Note: ~IE8 is a bit tricky for json in general as it needs server responses to be configured in such a way that it doesn't prompt the user to DOWNLOAD the json response. This has nothing to do with this library per se, it's just a problem that applies to this library as well.  A good practice for IE support is that you send responses as content-type text/plain, and always specify your ajax dataType (be it json or njson json).)
+The basic approach should work in any browser that supports ajax: that is, the iframe requests should work.  Only certain browsers will actually trigger indicators as expected though: so far I've gotten them to work in desktop Chrome, Firefox, and IE8.
 
-Safari and IE9 are probably beyond help here.  [They don't trigger ANY browser UI for content loaded in iframes](http://www.stevesouders.com/blog/2013/06/16/browser-busy-indicators/). I happen to think that this is bad design: users are familiar with these subtle loading signals and they are valuble when used correctly. One additional weird side effect of "silent" iframes is that it means that you could make an entire site load in a fullscreen iframe and have all internal navigation (i.e. new page loads) run "silently": that is, you can essentially instantly give any site the "feel" of a single page app, with no loading or busy indicators, just by running this code:
+Safari and IE9(+?) are probably beyond help here.  [They don't trigger ANY browser UI for content loaded in iframes](http://www.stevesouders.com/blog/2013/06/16/browser-busy-indicators/). I happen to think that this is bad design: users are familiar with these subtle loading signals and they are valuble when used correctly. One additional weird side effect of "silent" iframes is that it means that you could make an entire site load in a fullscreen iframe and have all internal navigation (i.e. new page loads) run "silently": that is, you can essentially instantly give any site the "feel" of a single page app, with no loading or busy indicators, just by running this code:
 
 ```
 document.documentElement.innerHTML = '<iframe src="/" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"></iframe>'
@@ -79,3 +79,6 @@ $(document).ready(function(){
     
 });
 ```
+
+####General IE8 note
+~IE8 is a bit tricky for json in general as it needs server responses to be configured in such a way that it doesn't prompt the user to DOWNLOAD the json response. This has nothing to do with this library per se, it's just a problem that applies to this library as well.  A good practice for IE support is that you send responses as content-type text/plain, and always specify your ajax dataType (be it json or njson json).
