@@ -4,7 +4,7 @@ Noisy JSON
 Control whether particular Same-Domain ajax JSON requests trigger a browser's native loading indicator by piping selected $.ajax requests through as special iframe method.
 
 ####The Problem
-Ajax requests don't trigger browser loading indicators in most situations, which is usually a good thing, but can be disappointing for that point in single page apps when you WANT the user to think a major form submission or "page" transition is in process.
+Ajax requests don't trigger browser loading indicators in most situations, which is usually a good thing, but can be disappointing for that point in single page apps when you WANT the user to think a major form submission or "page" transition is in process. It's always worth building your own loading/busy states internal to the page/app of course.  It's just that things don't feel quite "right" when major page transitions and form submissions don't engage the browser as well.
 
 ####The Lousy Solution: 
 The only really reliable way to trigger a browser's native loading state is to insert a separate hidden iframe into the page that loads a "stalled" resource (such as a php page that runs the command sleep(100000); ) and then removes it whenever you're done.  Doing this requires an extra http request, not to mention requiring the use of a server that is forced to expend resources basically doing nothing but keeping pointless connections alive.  The approach is also not intuitively linked to the actual action of getting the data: it's an effect that has to be tacked on later.
@@ -23,9 +23,9 @@ Safari and IE9 are probably beyond help here.  [They don't trigger ANY browser U
 document.documentElement.innerHTML = '<iframe src="/" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"></iframe>'
 ```
 
-Mobile browsers are also very stingy about triggering busy/loading indicators, so they all ignore iframe loads.  Because they're so important, I'm still looking for a sneaky way to make it work.  But sometimes you can't win.  
+Try it! It's... werid. It also means that a malicious site or code can more easily supress navigation signals, even when moving you from one domain to another.
 
-Finally, it's always worth building your own loading/busy states internal to the page/app of course.  It's just that things don't feel quite "right" when major page transitions and form submissions don't engage the browser as well.
+Mobile browsers are also very stingy about triggering busy/loading indicators, so they all ignore iframe loads.  Because they're so important, I'm still looking for a sneaky way to make it work.  But sometimes you can't win.
 
 ####Environment Limitations
 - This approach is same-origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but obviously not all: depends on your setup).
