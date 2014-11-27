@@ -10,20 +10,25 @@ Ajax requests don't trigger browser loading indicators in most situations, which
 The only really reliable way to trigger a browser's native loading state is to insert a separate hidden iframe into the page that loads a "stalled" resource (such as a php page that runs the command sleep(100000); ) and then removes it whenever you're done.  Doing this requires an extra http request, not to mention requiring the use of a server that is forced to expend resources basically doing nothing but keeping pointless connections alive.  The approach is also not intuitively linked to the actual action of getting the data: it's an effect that has to be tacked on later.
 
 ####This Solution
-We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/) api to create a special data transfer method that pipes requests through a hidden iframe, then parses the result and returns it as if it were a normal JSON request.
+We can use jQuery's [ajax transport](http://api.jquery.com/jQuery.ajaxTransport/) api to create a special data transfer method that pipes any particular requests that you want to be "noisy" through a hidden iframe, then parses the result and returns it as if it were a normal JSON request.
 
 The code/approach in question is basically a fork/rewrite of [cmlenz](https://github.com/cmlenz)'s lifesaving [jquery-iframe-transport](https://github.com/cmlenz/jquery-iframe-transport) (an amazingly slick little solution for achieving ajax-like file uploads on older browsers).
 
-###Browser Support
-So far I've gotten this working as expected in Chrome and Firefox and the IEs.  ~IE8 is a bit tricky for json in general as it needs server responses to be configured in such a way that it doesn't try to download the json file: namely, you should send responses as content-type text/plain, and always specify your ajax dataType (be it json or njson json).
+####Browser Support
+So far I've gotten this working as expected in desktop Chrome, Firefox, and IE8.  (Note: ~IE8 is a bit tricky for json in general as it needs server responses to be configured in such a way that it doesn't prompt the user to DOWNLOAD the json response. This has nothing to do with this library per se, it's just a problem that applies to this library as well.  A good practice for IE support is that you send responses as content-type text/plain, and always specify your ajax dataType (be it json or njson json).)
 
-I'm not sure what to think about Safari. Safari/iOS used to be broken such that it would show its loading indicators too often, but the latest Safari seems to have settled on not showing ANY UI indicators for any assets loaded in iframes period.  Seriously: if you load a site in an iframe and then browse around on it, the browser simply won't react AT ALL to page nativagation.  Bizarre.
+Safari and IE9 are probably beyond help here.  [They don't trigger ANY browser UI for content loaded in iframes](http://www.stevesouders.com/blog/2013/06/16/browser-busy-indicators/). I happen to think that this is bad design: users are familiar with these subtle loading signals and they are valuble when used correctly. One additional weird side effect of "silent" iframes is that it means that you could make an entire site load in a fullscreen iframe and have all internal navigation (i.e. new page loads) run "silently": that is, you can essentially instantly give any site the "feel" of a single page app, with no loading or busy indicators, just by running this code:
 
-So far I can't seem to trigger any native indicators on mobile browsers via the iframe technique: mobile browsers are just plain stingy about telling the user when things are loading, probably because it makes things "seem" slower.  But what are the rules that control whether they show their progress indicators or not?  Loading new content into the page later doesn't seem to trigger them, but the original assets do...
+```
+document.documentElement.innerHTML = '<iframe src="/" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"></iframe>'
+```
 
-####Limitations
-- This approach is same-origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but not all).
-- the server's api responses need to be sent as application/json, text/plain, or text/html
+Mobile browsers are also very stingy about triggering busy/loading indicators, so they all ignore iframe loads.  Because they're so important, I'm still looking for a sneaky way to make it work.  But sometimes you can't win.  
+
+Finally, it's always worth building your own loading/busy states internal to the page/app of course.  It's just that things don't feel quite "right" when major page transitions and form submissions don't engage the browser as well.
+
+####Environment Limitations
+- This approach is same-origin only: since we're reading the contents of an iframe, this approach is only suitable when both the calling page and the api are on the exact same domain (many single-page apps meet these qualifications but obviously not all: depends on your setup).
 
 ####Usage
 
