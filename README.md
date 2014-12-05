@@ -23,7 +23,7 @@ Safari and IE9(+?) are probably beyond help here.  [They don't trigger ANY brows
 document.documentElement.innerHTML = '<iframe src="/" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0"></iframe>'
 ```
 
-Try it! It's... werid. It also means that a malicious site or code can more easily supress navigation signals, even when moving you from one domain to another.
+Try it! It's... weird. It also means that a malicious site or code can more easily supress navigation signals, even when moving you from one domain to another.
 
 Mobile browsers are also very stingy about triggering busy/loading indicators, so they all ignore iframe loads.  Because they're so important, I'm still looking for a sneaky way to make it work.  But sometimes you can't win.
 
