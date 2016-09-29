@@ -101,7 +101,7 @@
                         // concat is used to avoid the "Script URL" JSLint error:
                         iframe
                             .unbind('load')
-                            .prop('src', initialIframeSrc);
+                            .prop('src', 'javascript:false;');
                     }
                     if ($form) {
                         $form.remove();
